@@ -3,11 +3,11 @@ import { CreateVendor, GetVendorByID, GetVendors } from "../controllers";
 
 const router = express.Router();
 
-router.post("/vendor", CreateVendor);
+router.post("/vandor", CreateVendor);
 
-router.get("/vendors", GetVendors);
+router.get("/vandors", GetVendors);
 
-router.get("/vendor/:id", GetVendorByID);
+router.get("/vandor/:id", GetVendorByID);
 
 router.get("/", (req, res) => {
   res.json({ message: "Hello from Admin" });

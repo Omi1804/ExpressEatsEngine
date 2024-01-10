@@ -1,7 +1,8 @@
 import { Response, Request, NextFunction } from "express";
-import { EditVendorInput, VandorLoginInputs } from "../dto";
+import { CreateFoodInputs, EditVendorInput, VandorLoginInputs } from "../dto";
 import { FindVandor } from "./AdminController";
 import { GenerateSignature, ValidatePassword } from "../utility";
+import { Food } from "../models/Food";
 
 export const VandorLogin = async (
   req: Request,
@@ -78,14 +79,37 @@ export const UpdateVandorProfile = async (
   return res.json({ message: "Unable to Update vendor profile " });
 };
 
-export const UpdateVandorService = async (
+export const UpdateVendorCoverImage = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const user = req.user;
 
-  const { foodType, name, address, phone } = <EditVendorInput>req.body;
+  if (user) {
+    const vendor = await FindVandor(user._id);
+
+    if (vendor !== null) {
+      const files = req.files as [Express.Multer.File];
+
+      const images = files.map((file: Express.Multer.File) => file.filename);
+
+      vendor.coverImages.push(...images);
+
+      const saveResult = await vendor.save();
+
+      return res.json(saveResult);
+    }
+  }
+  return res.json({ message: "Unable to Update vendor profile " });
+};
+
+export const UpdateVandorService = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
 
   if (user) {
     const existingVendor = await FindVandor(user._id);
@@ -98,4 +122,63 @@ export const UpdateVandorService = async (
     }
   }
   return res.json({ message: "Unable to Update vendor profile " });
+};
+
+export const Addfood = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
+
+  if (user) {
+    const { name, description, category, foodType, readyTime, price } = <
+      CreateFoodInputs
+    >req.body;
+
+    const vandor = await FindVandor(user._id);
+
+    if (vandor != null) {
+      //multer creates a directory file in req object like we have created user
+      const files = req.files as [Express.Multer.File];
+
+      const images = files.map((file: Express.Multer.File) => file.filename);
+
+      const createdFood = await Food.create({
+        vendorId: vandor._id,
+        name: name,
+        description: description,
+        category: category,
+        price: price,
+        rating: 0,
+        readyTime: readyTime,
+        foodType: foodType,
+        images: images,
+      });
+
+      vandor.foods.push(createdFood);
+      const result = await vandor.save();
+
+      return res.json(result);
+    }
+  }
+  return res.json({ message: "Something went wrong with add food" });
+};
+
+export const GetFoods = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
+
+  if (user) {
+    const foods = await Food.find({ vendorId: user._id });
+    console.log(foods);
+
+    if (foods !== null) {
+      return res.json(foods);
+    }
+  }
+  return res.json({ message: "Foods not found!" });
 };
