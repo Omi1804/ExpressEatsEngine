@@ -1,34 +1,17 @@
 import express from "express";
-import bodyParser from "body-parser";
-import { AdminRoute, VandorRoute } from "./routes";
-import mongoose from "mongoose";
-import { MONGO_URI } from "./config";
-import path from "path";
+import App from "./services/ExpressApp";
+import dbConnection from "./services/Database";
 
-require("dotenv").config();
+const StartServer = async () => {
+  const app = express();
 
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/images", express.static(path.join(__dirname, "images")));
+  await dbConnection();
 
-app.use("/admin", AdminRoute);
-app.use("/vandor", VandorRoute);
+  await App(app);
 
-if (!MONGO_URI) {
-  console.log("please define a MongoDB connection");
-  process.exit(1);
-}
+  app.listen(8000, () => {
+    console.log("App is listening on port 8000");
+  });
+};
 
-mongoose
-  .connect(MONGO_URI, {
-    dbName: "online_food_delivery_services",
-  })
-  .then((result) => {
-    console.log("DB connected");
-  })
-  .catch((err) => console.log("error" + err));
-
-app.listen(8000, () => {
-  console.log("App is listening on port 8000");
-});
+StartServer();
