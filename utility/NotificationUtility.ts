@@ -14,14 +14,16 @@ export const GenerateOtp = () => {
 
 export const onRequestOtp = async (otp: number, toPhoneNumber: string) => {
   const accountSid = "ACcd9c9d0231f6f4ee097eec02f76ed85c";
-  const authToken = "bfd13af2bc834d7543974df302e26f93";
+  const authToken = "5a8f3a8ca9e86f16999ffe6c913c7471";
   const client = require("twilio")(accountSid, authToken);
 
-  const resposne = await client.message.create({
+  const response = await client.messages.create({
     body: `Your OTP is ${otp}`,
-    from: "+917753951732",
-    to: toPhoneNumber,
+    from: "+12549463309",
+    to: `+91${toPhoneNumber}`,
   });
+
+  return response;
 };
 
 //Payment notificaiton or Email
