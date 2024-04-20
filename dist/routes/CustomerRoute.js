@@ -22,4 +22,10 @@ router.get("/otp", controllers_1.RequestOtp);
 // -------------- Profile --------------//
 router.get("/profile", controllers_1.GetCustomerProfile);
 router.patch("/profile", controllers_1.EditCustomerProfile);
+//cart
+//payment
+// Order
+router.post("/create-order", controllers_1.CreateOrder);
+router.get("/orders", controllers_1.GetOrders);
+router.get("/order/:id", controllers_1.GetOrderById);
 //# sourceMappingURL=CustomerRoute.js.map

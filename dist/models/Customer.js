@@ -38,6 +38,12 @@ const CustomerSchema = new mongoose_1.Schema({
     otp_expiry: { type: Date },
     lat: { type: Number },
     lng: { type: Number },
+    orders: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "order",
+        },
+    ],
 }, {
     toJSON: {
         transform(doc, ret) {

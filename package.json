@@ -2,7 +2,7 @@
   "name": "online_food_order_app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
     "start": "node dist/index.js",
@@ -10,8 +10,8 @@
     "postinstall": "npm run build"
   },
   "engines": {
-    "node": "20.11.0",
-    "npm": "10.2.4"
+    "node": "^20.11.1",
+    "npm": "^10.2.4"
   },
   "keywords": [],
   "author": "",

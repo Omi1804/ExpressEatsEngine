@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EditCustomerProfileInputs = exports.UserLoginInputs = exports.CreateCustomerInputs = void 0;
+exports.OrderInputs = exports.EditCustomerProfileInputs = exports.UserLoginInputs = exports.CreateCustomerInputs = void 0;
 const class_validator_1 = require("class-validator");
 //we make customer interface little different through class-validator and class-transformer
 class CreateCustomerInputs {
@@ -42,4 +42,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.Length)(6, 16)
 ], EditCustomerProfileInputs.prototype, "address", void 0);
+class OrderInputs {
+}
+exports.OrderInputs = OrderInputs;
 //# sourceMappingURL=Customer.dto.js.map
